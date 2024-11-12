@@ -1,18 +1,14 @@
-# Usa una imagen base de PHP con Apache
-FROM php:8.2-apache
+# Usa una imagen base de Nginx
+FROM nginx:latest
 
-# Copia el contenido del proyecto en el directorio predeterminado de Apache
-COPY . /var/www/html/
+# Copia los archivos del proyecto al directorio donde Nginx busca los archivos estáticos
+COPY . /usr/share/nginx/html
 
-# Da permisos de lectura a todos los archivos (esto puede ajustarse según tus necesidades de permisos)
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+# Da permisos adecuados a los archivos copiados
+RUN chmod -R 755 /usr/share/nginx/html
 
 # Expone el puerto 80
 EXPOSE 80
 
-# Opcional: Instala extensiones de PHP adicionales si tu aplicación las necesita
-RUN docker-php-ext-install mysqli
-
-# Instrucción de inicio
-CMD ["apache2-foreground"]
+# Inicia Nginx en primer plano
+CMD ["nginx", "-g", "daemon off;"]
