@@ -1,0 +1,74 @@
+<!-- IndexFront-end.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Vuelos</title>
+    <link rel="stylesheet" href="Estilo.css">
+</head>
+<body>
+
+    <div class="flight-container">
+        <h2>Buscar Vuelos</h2>
+        <form id="flightForm">
+            <label for="origen">Lugar de Origen:</label>
+            <input type="text" id="origen" name="origen" placeholder="Ej. Ciudad de México" required>
+
+            <label for="destino">Lugar de Destino:</label>
+            <input type="text" id="destino" name="destino" placeholder="Ej. Cancún" required>
+
+            <label for="fecha">Fecha de Salida:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <button type="submit">Buscar Vuelos</button>
+        </form>
+
+        <div id="resultados" style="display:none;">
+            <h3>Vuelos Disponibles:</h3>
+            <ul id="vuelos-list">
+                <!-- Los vuelos se mostrarán aquí -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("flightForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var origen = document.getElementById("origen").value;
+            var destino = document.getElementById("destino").value;
+            var fecha = document.getElementById("fecha").value;
+
+            // Simulando resultados de vuelos
+            var vuelos = [
+                { origen: "Ciudad de México", destino: "Cancún", fecha: "2024-11-20", precio: "$1500" },
+                { origen: "Ciudad de México", destino: "Cancún", fecha: "2024-11-21", precio: "$1600" },
+                { origen: "Ciudad de México", destino: "Cancún", fecha: "2024-11-22", precio: "$1400" }
+            ];
+
+            var resultados = vuelos.filter(function(vuelo) {
+                return vuelo.origen === origen && vuelo.destino === destino && vuelo.fecha === fecha;
+            });
+
+            var listaVuelos = document.getElementById("vuelos-list");
+            listaVuelos.innerHTML = ""; // Limpiar resultados anteriores
+
+            if (resultados.length > 0) {
+                resultados.forEach(function(vuelo) {
+                    var li = document.createElement("li");
+                    li.textContent = "Vuelo de " + vuelo.origen + " a " + vuelo.destino + " en " + vuelo.fecha + " - Precio: " + vuelo.precio;
+                    listaVuelos.appendChild(li);
+                });
+                document.getElementById("resultados").style.display = "block";
+            } else {
+                var li = document.createElement("li");
+                li.textContent = "No hay vuelos disponibles para esa búsqueda.";
+                listaVuelos.appendChild(li);
+                document.getElementById("resultados").style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+</html>
